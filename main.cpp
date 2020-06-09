@@ -238,9 +238,13 @@ int main()
 {
     float **ary;
     ary = new float *[2];
-    ary[
-    
-    float *point = *ary;
+    for(int i = 0; i < sizeof(ary); i++) 
+    {
+        ary[i] = new float[2]; 
+        for(int j = 0; j < sizeof(ary[i]); j++)
+            ary[i][j] = 2; 
+    }
+       
     srand(1);
 //    Matrix test = Matrix(3, 3);
 //    Matrix test2 = Matrix(2, 3);
@@ -255,5 +259,5 @@ int main()
 //    result.print();
     Matrix array = Matrix(ary, 2, 2);
     array.print();
-    
+    return 0; 
 }
