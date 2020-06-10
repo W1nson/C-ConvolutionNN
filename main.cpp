@@ -41,15 +41,17 @@ int main()
 {
 	srand(1);
 	
-	/*float** ary;
-	ary = new float* [2];
-	for (int i = 0; i < sizeof(ary); i++)
+	float input[3][5] = {{1,2,3,4,5},{1,2,3,4,5},{1,2,3,4,5}}; 
+	
+	ary = new float* [sizeof(input) / sizeof(input[0])];
+	for (int i = 0; i < sizeof(input) / sizeof(input[0]); i++)
 	{
-		ary[i] = new float[2];
-		for (int j = 0; j < sizeof(ary[i]); j++)
-			ary[i][j] = 2;
+		ary[i] = new float[sizeof(input[0]) / sizeof(float)];
+		for (int j = 0; j < sizeof(input[0]) / sizeof(float); j++)
+			ary[i][j] = input[i][j];
 	}
-	Matrix array = Matrix(ary, 2, 2);	*/
+	
+	Matrix array = Matrix(ary, 3,5); 
 
 
 	Matrix test = Matrix(2, 3); 
