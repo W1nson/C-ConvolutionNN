@@ -1,5 +1,6 @@
 #include "Matrix.h"
 
+// Constructor of the Matrix class
 Matrix::Matrix()
 {
 	row = 0;
@@ -10,7 +11,7 @@ Matrix::Matrix()
 		ary[i] = new float[col];
 	}
 }
-
+// Constructor of the Matrix class with the inputing the pre-existing 2d array. 
 Matrix::Matrix(float** temp, int row, int col)
 {
 	Matrix::row = row;
@@ -24,7 +25,7 @@ Matrix::Matrix(float** temp, int row, int col)
 	}
 
 }
-
+// Constructor of Matrix class with pre-existing size
 Matrix::Matrix(int row, int col)
 {
 	Matrix::row = row;
@@ -35,7 +36,9 @@ Matrix::Matrix(int row, int col)
 		ary[i] = new float[col];
 	}
 }
-
+// Random function to create randome number from 0-1 for every element in the size of your matrix
+// parameter: none 
+// return: none 
 void Matrix::random()
 {
 	float temp = ((float)rand() / (RAND_MAX));
@@ -47,7 +50,9 @@ void Matrix::random()
 		}
 	}
 }
-
+// adding two of the same size matrix together and return a new Matrix
+// parameter: Matrix temp
+// return: Matrix result
 Matrix Matrix::add(Matrix temp)
 {
 	Matrix result;
@@ -72,6 +77,9 @@ Matrix Matrix::add(Matrix temp)
 		return result;
 	}
 }
+// subtracting two of the same size matrix together and return a new Matrix. 
+// parameter: Matrix temp 
+// return: Matrix result 
 Matrix Matrix::subtract(Matrix temp)
 {
 	Matrix result;
@@ -96,7 +104,9 @@ Matrix Matrix::subtract(Matrix temp)
 		return result;
 	}
 }
-
+// Dot product function for matrix multiplication with a bias include 
+// parameter: Matrix temp, float bias = 0 
+// return: Matrix
 Matrix Matrix::dot(Matrix temp, float bias)
 {
 	Matrix result;
@@ -132,7 +142,9 @@ Matrix Matrix::dot(Matrix temp, float bias)
 		return result;
 	}
 }
-
+// Scalar multiplication function for matrix multiplication with a bias include 
+// parameter: Matrix temp, float bias = 0 
+// return: Matrix
 void Matrix::scale(float temp)
 {
 	Matrix result;
@@ -147,7 +159,9 @@ void Matrix::scale(float temp)
 	}
 	ary = result.ary; 
 }
-
+// Modifying the matrix with the activation function in the obejct itself. 
+// parameter: string function (sigmoid, relu, leakyrelu)
+// return: none
 void Matrix::modi(string function)
 {
 	if (function.compare("sigmoid") == 0)
@@ -188,8 +202,9 @@ void Matrix::modi(string function)
 	else
 		cout << "please type the right activation function!" << endl;
 }
-
-
+// Transposing the Matrix inside the object itself. 
+// parameter: none 
+// return: none 
 void Matrix::transpose()
 {
 	Matrix result = Matrix(col, row);
@@ -205,8 +220,9 @@ void Matrix::transpose()
 	col = row;
 	row = size;
 }
-
-
+// Setting the Matrix to become a square matrix by adding zeros on the missing row/col in the object itself 
+// parameter: none
+// return: none
 void Matrix::setSquare()
 {
 	
@@ -248,6 +264,9 @@ void Matrix::setSquare()
 	}
 }
 
+// Getting the size of the matrix
+// parameter: none
+// return: *int array 
 int* Matrix::getSize()
 {
 	int size[2];
@@ -256,7 +275,9 @@ int* Matrix::getSize()
 	return size;
 }
 
-
+// printing the matrix with the location indicated. 
+// parameter: none 
+// return: none 
 void Matrix::print()
 {
 	cout << "the size of this 2D array is: " << row << "x" << col << endl;
