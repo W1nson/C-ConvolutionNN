@@ -43,6 +43,8 @@ int main()
 	
 	float input[3][5] = {{1,2,3,4,5},{1,2,3,4,5},{1,2,3,4,5}}; 
 	
+	
+	//inputing the regular 2d array to the pointer format and import into the Matrix class to turn it into matrx.
 	ary = new float* [sizeof(input) / sizeof(input[0])];
 	for (int i = 0; i < sizeof(input) / sizeof(input[0]); i++)
 	{
@@ -52,6 +54,7 @@ int main()
 	}
 	
 	Matrix array = Matrix(ary, 3,5); 
+	array.print(); 
 
 
 	Matrix test = Matrix(2, 3); 
