@@ -13,8 +13,8 @@ public:
 	void flatten();
 	void Dense();
 	Matrix Conv2D(Matrix input, string filter);
-
+	Matrix MaxPool(Matrix input, int pool); 
 private:
-	Matrix weight;
+	Matrix result;
 };
 
