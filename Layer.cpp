@@ -55,7 +55,7 @@ Matrix Layer::Conv2D(Matrix input, string filter, string activate)
 	int col = og_col - 1;
 
 	Matrix temp = Matrix(3, 3);
-	Matrix result = Matrix(og_row, og_col);
+	result = Matrix(og_row, og_col);
 	for (int i = 0; i <= row; i++)
 	{
 		for (int j = 0; j <= col; j++)
@@ -147,7 +147,7 @@ Matrix Layer::Conv2D(Matrix input, string filter, string activate)
 
 Matrix Layer::Maxpool(Matrix input, int pool)
 {
-	Matrix result = Matrix(input.row/pool, input.col/pool); 
+	result = Matrix(input.row/pool, input.col/pool); 
 	float* temp = new float[pool*pool]; 
 	for( int i = 0; i < input.row; i+pool)
 	{
