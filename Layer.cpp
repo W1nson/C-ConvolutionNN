@@ -6,7 +6,7 @@ Layer::Layer()
 
 }
 
-Matrix Layer::Conv2D(Matrix input, string filter)
+Matrix Layer::Conv2D(Matrix input, string filter, string activate)
 {
 	float** patato;
 	
@@ -140,5 +140,46 @@ Matrix Layer::Conv2D(Matrix input, string filter)
 			temp = Matrix(3, 3);
 		}
 	}
+	result.modi(activate); 
 	return result;
 }
+
+
+Matrix Layer::Maxpool(Matrix input, int pool)
+{
+	Matrix result = Matrix(input.row/pool, input.col/pool); 
+	float* temp = new float[pool*pool]; 
+	for( int i = 0; i < input.row; i+pool)
+	{
+		for(int j = 0; j < input.col; j+pool)
+		{
+			if( pool == 2)
+			{
+				temp.append(input.ary[i][j]); 
+				temp.append(input.ary[i][j+1]); 
+				temp.append(input.ary[i+1][j]); 
+				temp.append(input.ary[i+1][j+1]); 
+			}
+			else if( pool == 3) 
+			{
+				temp.append(input.ary[i][j]); 
+				temp.append(input.ary[i][j+1]); 
+				temp.append(input.ary[i][j+2]); 
+				temp.append(input.ary[i+1][j]); 
+				temp.append(input.ary[i+1][j+1]); 
+				temp.append(input.ary[i+1][j+2]);
+				temp.append(input.ary[i+2][j]); 
+				temp.append(input.ary[i+2][j+1]); 
+				temp.append(input.ary[i+2][j+2]);
+			}
+			float max = temp[0];
+			for(int k = 0; k < sizeof(temp); k++)
+				if(temp[k] > max)
+					max = temp[i]; 
+			result.ary[i/pool][j/pool] = max; 
+		}
+	}
+	return result; 
+	
+}
+
