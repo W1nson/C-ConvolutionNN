@@ -8,19 +8,18 @@ using namespace std;
 int main()
 {
 	srand(1);
-	
-	
-	
-	float input[9][9] = { 
-	{ 1, -1, -1, -1, 1, 1, -1, -1, -1},
-	{-1, 1, -1, 1, -1,-1, 1, -1, 1},
-	{-1, -1, 1, -1, -1,-1, -1, 1, -1},
-	{-1, 1, -1, 1, -1,-1, 1, -1, 1},
-	{ 1, -1, -1, -1, 1, 1, -1, -1, -1},
-	{ 1, -1, -1, -1, 1, 1, -1, -1, -1},
-	{-1, 1, -1, 1, -1, -1, 1, -1, 1},
-	{-1, -1, 1, -1, -1, -1, -1, 1, -1},
-	{-1, 1, -1, 1, -1, -1, 1, -1, 1} };
+
+	float input[10][10] = {
+	{ 1, -1, -1, -1, 1, 1, -1, -1, -1, -1},
+	{-1, 1, -1, 1, -1,-1, 1, -1, 1, -1},
+	{-1, -1, 1, -1, -1,-1, -1, 1, -1,-1},
+	{-1, 1, -1, 1, -1,-1, 1, -1, 1,-1},
+	{ 1, -1, -1, -1, 1, 1, -1, -1, -1,-1},
+	{ 1, -1, -1, -1, 1, 1, -1, -1, -1,-1},
+	{-1, 1, -1, 1, -1, -1, 1, -1, 1,-1},
+	{-1, -1, 1, -1, -1, -1, -1, 1, -1,-1},
+	{-1, 1, -1, 1, -1, -1, 1, -1, 1,-1},
+	{-1, 1, -1, 1, -1, -1, 1, -1, 1,-1} };
 
 	//inputing the regular 2d array to the pointer format 
 	//and import into the Matrix class to turn it into matrx.
@@ -33,49 +32,25 @@ int main()
 			ary[i][j] = input[i][j];
 	}
 
-	Layer trial = Layer(); 
+
 	
-	Matrix img = Matrix(ary, 9, 9);
-	img.printGrid(); 
+	Matrix img = Matrix(ary, 10, 10);
+	Layer trial = Layer(img, 3);
+	trial.input.printGrid();
+	trial.Conv2D("edge", "relu");
+	trial.MaxPool(2);
+	trial.Conv2D("edge", "relu");
+	trial.MaxPool(2);
+	trial.flatten();
+	trial.Dense(512, "sigmoid");
+	trial.Dense(256, "sigmoid");
+	trial.Dense(128, "sigmoid");
+	trial.Dense(64, "sigmoid");
+	trial.Dense(10, "softmax");
+	trial.result.printGrid();
 
+	cout << "size of output" << trial.result.row << "x" << trial.result.col << endl;
 
-
-	Matrix edge = trial.Conv2D(img, "edge", "relu");
-	//Matrix pool = trial.MaxPooling(edge, 2, "relu");
-	cout << endl;
-	edge.printGrid();
-
-	Matrix pool = trial.MaxPool(edge, 3);
-	cout << endl; 
-	pool.printGrid();
-
-
-	/*
-	Matrix test = Matrix(2, 3); 
-	int* size = test.getSize();
-	cout << size[0] << "x" << size[1] << endl;
-	test.random(); 
-	test.print(); 
-	cout << endl; 
-
-	test.transpose(); 
-	test.print(); 
-
-	cout << endl; 
-	test.setSquare(); 
-	test.print(); 
-	*/
 
 	return 0;
 }
-
-
-
-
-/* 
-Matrix h1 = layer.Con2D(input, "edge", "relu")
-
-
-
-
-*/

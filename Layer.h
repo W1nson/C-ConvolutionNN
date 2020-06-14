@@ -8,15 +8,15 @@
 class Layer
 {
 public:
-	Layer(); 
+	Layer(Matrix in, int num); 
 	Layer(string filter, string activa, float size[]);
-	Matrix flatten();
-	Matrix Dense(Matrix input, int size, string activate);
-	Matrix MaxPool(Matrix input, int pool); 
-	Matrix Conv2D(Matrix input, string filter, string activate);
-	
-private:
-	Matrix result;
-	Matrix weight; 
+	void flatten();
+	void Dense(int size, string activate);
+	void MaxPool(int pool); 
+	void Conv2D(string filter, string activate);
+
+	Matrix input, result, *weight; 
+	int count; 
+
 };
 

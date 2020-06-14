@@ -1,28 +1,100 @@
 #include "Layer.h"
 using namespace std; 
 
-Layer::Layer()
+Layer::Layer(Matrix in, int num)
 {
-
+	input = in; 
+	weight = new Matrix[num];
+	count = 0; 
 }
 
-Matrix Layer::flatten()
+void Layer::flatten()
 {
-
+	int count = 0; 
+	int r = 0;
+	Matrix temp = Matrix(1, result.row * result.col);
+	for (int i = 0; i < result.row*result.col; i++)
+	{
+		if (count < result.col)
+		{
+			temp.ary[0][i] = result.ary[r][count];
+			count++; 
+		}
+		else if(r < result.row)
+		{
+			r++;
+			count = 0; 
+			temp.ary[0][i] = result.ary[r][count];
+			count++;
+		}
+	}
+	result = temp; 
 }
 
-
-
-Matrix Layer::Dense(Matrix input, int size, string activate)
+void Layer::Dense(int size, string activate)
 {
-	weight = Matrix(input.col, size);
+	if (input.row != 0 && input.col != 0)
+		input = result;
+	else
+		cout << "you don't have input" << endl; 
+	Matrix temp = Matrix(input.col, size);
+	temp.random(); 
+	weight[count] = temp; 
+	count++; 
+	result = input.dot(temp); 
+	result.modi(activate);
 }
 
+void Layer::MaxPool(int pool)
+{
+	if (input.row != 0 && input.col != 0)
+		input = result;
+	else
+		cout << "you don't have input" << endl;
 
+	result = Matrix(input.row / pool, input.col / pool);
 
+	float temp[10] = { 0,0,0,0,0,0,0,0,0,0 };
+	for (int i = 0; i < input.row; i += pool)
+	{
+		for (int j = 0; j < input.col; j += pool)
+		{
+			if (pool == 2)
+			{
+				temp[0] = input.ary[i][j];
+				temp[1] = input.ary[i][j + 1];
+				temp[2] = input.ary[i + 1][j];
+				temp[3] = input.ary[i + 1][j + 1];
+			}
+			else if (pool == 3)
+			{
+				temp[0] = input.ary[i][j];
+				temp[1] = input.ary[i][j + 1];
+				temp[2] = input.ary[i][j + 2];
+				temp[3] = input.ary[i + 1][j];
+				temp[4] = input.ary[i + 1][j + 1];
+				temp[5] = input.ary[i + 1][j + 2];
+				temp[6] = input.ary[i + 2][j];
+				temp[7] = input.ary[i + 2][j + 1];
+				temp[8] = input.ary[i + 2][j + 2];
+			}
 
+			float max = temp[0];
+			for (int k = 1; k < 10; k++)
+			{
+				if (temp[k] > max)
+				{
+					max = temp[k];
+				}
+			}
+			//cout << max << endl; 
+			//cout << j << endl;
+			result.ary[i / pool][j / pool] = max;
+		}
+	}
+}
 
-Matrix Layer::Conv2D(Matrix input, string filter, string activate)
+void Layer::Conv2D(string filter, string activate)
 {
 	float** patato;
 	
@@ -156,51 +228,7 @@ Matrix Layer::Conv2D(Matrix input, string filter, string activate)
 			temp = Matrix(3, 3);
 		}
 	}
-	result.modi(activate); 
-	return result;
+	result.modi(activate);
 }
 
-Matrix Layer::MaxPool(Matrix input, int pool)
-{
-	result = Matrix(input.row / pool, input.col / pool);
 
-	float temp[10] = { 0,0,0,0,0,0,0,0,0,0};
-	for (int i = 0; i < input.row; i += pool)
-	{
-		for (int j = 0; j < input.col; j+=pool)
-		{
-			if (pool == 2)
-			{
-				temp[0] = input.ary[i][j];
-				temp[1] = input.ary[i][j + 1];
-				temp[2] = input.ary[i + 1][j];
-				temp[3] = input.ary[i + 1][j + 1];
-			}
-			else if (pool == 3)
-			{
-				temp[0] = input.ary[i][j];
-				temp[1] = input.ary[i][j + 1];
-				temp[2] = input.ary[i][j + 2];
-				temp[3] = input.ary[i + 1][j];
-				temp[4] = input.ary[i + 1][j + 1];
-				temp[5] = input.ary[i + 1][j + 2];
-				temp[6] = input.ary[i + 2][j];
-				temp[7] = input.ary[i + 2][j + 1];
-				temp[8] = input.ary[i + 2][j + 2];
-			}
-
-			float max = temp[0];
-			for (int k = 1; k < 10; k++)
-			{
-				if (temp[k] > max)
-				{
-					max = temp[k];
-				}
-			}
-			//cout << max << endl; 
-			//cout << j << endl;
-			result.ary[i / pool][j / pool] = max;
-		}
-	}
-	return result;
-}

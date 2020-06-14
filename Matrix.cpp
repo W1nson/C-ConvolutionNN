@@ -13,7 +13,7 @@ Matrix::Matrix()
 		for (int j = 0; j < col; j++)
 		{
 			ary[i][j] = 0;
-		}
+		}	
 	}
 }
 // Constructor of the Matrix class with the inputing the pre-existing 2d array. 
@@ -131,13 +131,10 @@ Matrix Matrix::dot(Matrix temp, float bias)
 			{
 				for (int k = 0; k < col; k++)
 				{
-					product = ary[i][k] * temp.ary[k][i]; 
+					product = ary[i][k] * temp.ary[k][j]; 
 					sum = sum + product; 
-					cout << "location: org[" << i << "][" << k << "] X temp[" << k << "][" << i << "]: ";
-					cout << product << endl;
 				}
 				result.ary[i][j] = sum + bias;
-				cout << sum << endl; 
 				sum = 0; 
 			}
 		}
@@ -230,13 +227,29 @@ void Matrix::modi(string function)
 			for (int j = 0; j < col; j++)
 			{
 				if (ary[i][j] < 0)
-					ary[i][j] = 0.01 * ary[i][j];
+					ary[i][j] = float(0.01) * ary[i][j];
 			}
+		}
+	}
+	else if (function.compare("softmax") == 0)
+	{
+		cout << "Activation Fucntion is softmax" << endl;
+		float sum = 0; 
+		for (int i = 0; i < col; i++)
+		{
+			sum += exp(ary[0][i]);
+		}
+		cout << "sum: " << sum << endl;
+		for (int j = 0; j < col; j++)
+		{
+			cout << exp(ary[0][j]) << endl;
+			ary[0][j] = exp(ary[0][j]) / sum; 
 		}
 	}
 	else
 		cout << "please type the right activation function!" << endl;
 }
+
 // Transposing the Matrix inside the object itself. 
 // parameter: none 
 // return: none 
