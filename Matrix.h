@@ -16,12 +16,15 @@ public:
 	Matrix subtract(Matrix temp);
 	void scale(float temp);
 	Matrix dot(Matrix temp, float = 0.0);
+	float conv(Matrix temp); 
 	void modi(string function);
 	void transpose(); 
 	void setSquare(); 
 	int* getSize(); 
 	void print();
-private:
+	void printGrid(); 
+
+
 	int row, col;
 	float** ary;
 };
