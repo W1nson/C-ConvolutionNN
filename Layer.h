@@ -4,19 +4,16 @@
 #include <stdlib.h> 
 #include <math.h> 
 
-
-class Layer
+/*
+class layer
 {
 public:
-	Layer(); 
-	Layer(string filter, string activa, float size[]);
-	Matrix flatten();
-	Matrix Dense(Matrix input, int size, string activate);
-	Matrix MaxPool(Matrix input, int pool); 
-	Matrix Conv2D(Matrix input, string filter, string activate);
-	
-private:
-	Matrix result;
-	Matrix weight; 
-};
+	layer(string filter, string activa, float size[]);
+	void flatten();
+	void Dense();
+	Matrix Conv2D(Matrix input, string filter, string activa);
 
+private:
+	Matrix weight;
+};
+*/
