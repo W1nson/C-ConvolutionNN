@@ -1,5 +1,4 @@
 #include "Matrix.h"
-using namespace std; 
 
 // Constructor of the Matrix class
 Matrix::Matrix()
@@ -10,10 +9,6 @@ Matrix::Matrix()
 	for (int i = 0; i < row; i++)
 	{
 		ary[i] = new float[col];
-		for (int j = 0; j < col; j++)
-		{
-			ary[i][j] = 0;
-		}
 	}
 }
 // Constructor of the Matrix class with the inputing the pre-existing 2d array. 
@@ -39,10 +34,6 @@ Matrix::Matrix(int row, int col)
 	for (int i = 0; i < row; i++)
 	{
 		ary[i] = new float[col];
-		for (int j = 0; j < col; j++)
-		{
-			ary[i][j] = 0; 
-		}
 	}
 }
 // Random function to create randome number from 0-1 for every element in the size of your matrix
@@ -151,32 +142,6 @@ Matrix Matrix::dot(Matrix temp, float bias)
 		return result;
 	}
 }
-
-// This function is used for caluation the sum of multiplication of corresponding elements in the matrices
-// it has to be the same size for both matrices 
-// parameter: Matrix temp 
-// return float
-float Matrix::conv(Matrix temp)
-{
-	float sum = 0; 
-	if (row == temp.row && col == temp.col)
-	{
-		for (int i = 0; i < row; i++)
-		{
-			for (int j = 0; j < col; j++)
-			{
-				sum += ary[i][j] * temp.ary[i][j];
-			}
-		}
-		return sum;
-	}
-	else
-	{
-		cout << "Matrix convolve error: Matrix must be in the same size." << endl; 
-		return 0; 
-	}
-}
-
 // Scalar multiplication function for matrix multiplication with a bias include 
 // parameter: Matrix temp, float bias = 0 
 // return: Matrix
@@ -324,20 +289,5 @@ void Matrix::print()
 		}
 	}
 
-}
-
-// printing the matrix with grid view
-// parameter: none 
-// return: none
-void Matrix::printGrid()
-{
-	for (int i = 0; i < row; i++)
-	{
-		for (int j = 0; j < col; j++)
-		{
-			cout << ary[i][j] << ' '; 
-		}
-		cout << endl; 
-	}
 }
 
