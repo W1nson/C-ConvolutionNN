@@ -39,13 +39,11 @@ int main()
 	trial.input.printGrid();
 	trial.Conv2D("edge", "relu");
 	trial.MaxPool(2);
-	trial.Conv2D("edge", "relu");
-	trial.MaxPool(2);
 	trial.flatten();
-	trial.Dense(512, "sigmoid");
-	trial.Dense(256, "sigmoid");
 	trial.Dense(128, "sigmoid");
+	trial.result.printGrid(); 
 	trial.Dense(64, "sigmoid");
+	trial.result.printGrid();
 	trial.Dense(10, "softmax");
 	trial.result.printGrid();
 
