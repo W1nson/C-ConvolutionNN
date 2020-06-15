@@ -198,7 +198,7 @@ void Matrix::modi(string function)
 {
 	if (function.compare("sigmoid") == 0)
 	{
-		cout << "Activation Fucntion is sigmoid" << endl;
+		//cout << "Activation Fucntion is sigmoid" << endl;
 		for (int i = 0; i < row; i++)
 		{
 			for (int j = 0; j < col; j++)
@@ -209,7 +209,7 @@ void Matrix::modi(string function)
 	}
 	else if (function.compare("relu") == 0)
 	{	
-		cout << "Activation Fucntion is relu" << endl; 
+		//cout << "Activation Fucntion is relu" << endl; 
 		for (int i = 0; i < row; i++)
 		{
 			for (int j = 0; j < col; j++)
@@ -221,7 +221,7 @@ void Matrix::modi(string function)
 	}
 	else if (function.compare("leakyrelu") == 0)
 	{
-		cout << "Activation Fucntion is leakyrelu" << endl;
+		//cout << "Activation Fucntion is leakyrelu" << endl;
 		for (int i = 0; i < row; i++)
 		{
 			for (int j = 0; j < col; j++)
@@ -233,7 +233,7 @@ void Matrix::modi(string function)
 	}
 	else if (function.compare("softmax") == 0)
 	{
-		cout << "Activation Fucntion is softmax" << endl;
+		//cout << "Activation Fucntion is softmax" << endl;
 		float sum = 0; 
 		for (int i = 0; i < col; i++)
 		{
@@ -268,6 +268,7 @@ void Matrix::transpose()
 	col = row;
 	row = size;
 }
+
 // Setting the Matrix to become a square matrix by adding zeros on the missing row/col in the object itself 
 // parameter: none
 // return: none
