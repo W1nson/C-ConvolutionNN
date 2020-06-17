@@ -2,5 +2,5 @@
 
 This is the C++ version of self built convolutional neural network for image processing. 
 
-Right now the development is building the base class of Matrix 
-We will move on to Layers and Network class later 
+Finished with Matrix class and layer class 
+but now is working on the back propagation of network. 
