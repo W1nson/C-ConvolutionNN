@@ -16,6 +16,7 @@ Matrix::Matrix()
 		}	
 	}
 }
+
 // Constructor of the Matrix class with the inputing the pre-existing 2d array. 
 Matrix::Matrix(float** temp, int row, int col)
 {
@@ -30,6 +31,7 @@ Matrix::Matrix(float** temp, int row, int col)
 	}
 
 }
+
 // Constructor of Matrix class with pre-existing size
 Matrix::Matrix(int row, int col)
 {
@@ -45,6 +47,23 @@ Matrix::Matrix(int row, int col)
 		}
 	}
 }
+
+//Constructor of matrix class fill with one number
+Matrix::Matrix(float temp, int row, int col)
+{
+	Matrix::row = row;
+	Matrix::col = col;
+	Matrix::ary = new float* [row];
+	for (int i = 0; i < row; i++)
+	{
+		ary[i] = new float[col];
+		for (int j = 0; j < col; j++)
+		{
+			ary[i][j] = temp;
+		}
+	}
+}
+
 // Random function to create randome number from 0-1 for every element in the size of your matrix
 // parameter: none 
 // return: none 
@@ -59,6 +78,7 @@ void Matrix::random()
 		}
 	}
 }
+
 // adding two of the same size matrix together and return a new Matrix
 // parameter: Matrix temp
 // return: Matrix result
@@ -86,6 +106,7 @@ Matrix Matrix::add(Matrix temp)
 		return result;
 	}
 }
+
 // subtracting two of the same size matrix together and return a new Matrix. 
 // parameter: Matrix temp 
 // return: Matrix result 
@@ -113,6 +134,24 @@ Matrix Matrix::subtract(Matrix temp)
 		return result;
 	}
 }
+
+// multiply the two matrix with same size together
+// parameter: Matrix temp 
+// return Matrix result
+Matrix Matrix::multi(Matrix temp)
+{
+	Matrix result = Matrix(row, col);
+	for (int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < col; j++)
+		{
+			result.ary[i][j] = ary[i][j] * temp.ary[i][j];
+		}
+	}
+	return result; 
+}
+
+
 // Dot product function for matrix multiplication with a bias include 
 // parameter: Matrix temp, float bias = 0 
 // return: Matrix
@@ -175,7 +214,7 @@ float Matrix::conv(Matrix temp)
 }
 
 // Scalar multiplication function for matrix multiplication with a bias include 
-// parameter: Matrix temp, float bias = 0 
+// parameter: float temp
 // return: Matrix
 void Matrix::scale(float temp)
 {
@@ -191,6 +230,7 @@ void Matrix::scale(float temp)
 	}
 	ary = result.ary; 
 }
+
 // Modifying the matrix with the activation function in the obejct itself. 
 // parameter: string function (sigmoid, relu, leakyrelu)
 // return: none
@@ -239,10 +279,10 @@ void Matrix::modi(string function)
 		{
 			sum += exp(ary[0][i]);
 		}
-		cout << "sum: " << sum << endl;
+		//cout << "sum: " << sum << endl;
 		for (int j = 0; j < col; j++)
 		{
-			cout << exp(ary[0][j]) << endl;
+			//cout << exp(ary[0][j]) << endl;
 			ary[0][j] = exp(ary[0][j]) / sum; 
 		}
 	}
@@ -345,11 +385,12 @@ void Matrix::print()
 // return: none
 void Matrix::printGrid()
 {
+	cout.precision(3);
 	for (int i = 0; i < row; i++)
 	{
 		for (int j = 0; j < col; j++)
 		{
-			cout << ary[i][j] << ' '; 
+			cout << ary[i][j] << "\t"; 
 		}
 		cout << endl; 
 	}

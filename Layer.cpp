@@ -3,9 +3,12 @@ using namespace std;
 
 Layer::Layer(Matrix in, int num)
 {
+	
 	input = in; 
 	weight = new Matrix[num];
-	count = 0; 
+	h_out = new Matrix[num];
+	count = 0;
+
 }
 
 void Layer::flatten()
@@ -33,16 +36,21 @@ void Layer::flatten()
 
 void Layer::Dense(int size, string activate)
 {
+	cout << "before: " << count << endl;
 	if (input.row != 0 && input.col != 0)
+	{
 		input = result;
+	}
 	else
 		cout << "you don't have input" << endl; 
 	Matrix temp = Matrix(input.col, size);
 	temp.random(); 
-	weight[count] = temp; 
-	count++; 
+	weight[count] = temp;  
 	result = input.dot(temp); 
 	result.modi(activate);
+	h_out[count] = result;
+	count++;
+	cout << "after: " << count << endl;
 }
 
 void Layer::MaxPool(int pool)
@@ -94,7 +102,7 @@ void Layer::MaxPool(int pool)
 	}
 }
 
-void Layer::Conv2D(string filter, string activate)
+void Layer::Conv2D(string filter, string activate, int filter_size)
 {
 	float** patato;
 	
@@ -108,6 +116,7 @@ void Layer::Conv2D(string filter, string activate)
 				patato[i][j] = -0.125;
 		}
 		patato[1][1] = 1;
+		feature = Matrix(patato, 3, 3);
 	}
 	else if (filter.compare("shift") == 0)
 	{
@@ -120,21 +129,15 @@ void Layer::Conv2D(string filter, string activate)
 		}
 		patato[1][1] = 1;
 		patato[2][2] = -1;
+		feature = Matrix(patato, 3, 3);
 	}
 	else
 	{
-		patato = new float* [3];
-		for (int i = 0; i < 3; i++)
-		{
-			patato[i] = new float[3];
-			for (int j = 0; j < 3; j++)
-			{
-				patato[i][j] = 0;
-			}
-		}
+		feature = Matrix(filter_size, filter_size); 
+		feature.random(); 
 	}
 
-	Matrix feature = Matrix(patato, 3, 3);
+	
 	
 	int* size = input.getSize();
 	int og_row = size[0];
@@ -142,7 +145,7 @@ void Layer::Conv2D(string filter, string activate)
 	int row = og_row - 1;
 	int col = og_col - 1;
 
-	Matrix temp = Matrix(3, 3);
+	Matrix temp = Matrix(filter_size, filter_size);
 	result = Matrix(og_row, og_col);
 	for (int i = 0; i <= row; i++)
 	{
@@ -225,10 +228,114 @@ void Layer::Conv2D(string filter, string activate)
 				temp.ary[2][2] = input.ary[i + 1][j + 1];
 			}
 			result.ary[i][j] = temp.conv(feature);
-			temp = Matrix(3, 3);
+			temp = Matrix(filter_size, filter_size);
 		}
 	}
 	result.modi(activate);
 }
+
+void Layer::BackProp(Matrix train_in, Matrix train_out, float lr)
+{
+	/*
+	error = train_out.subtract(result);
+	//cout << "error: " << error.row << "x" << error.col << endl;
+	error.printGrid();
+	totalError = 0;
+	for (int i = 0; i < error.col; i++)
+	{
+		totalError += error.ary[0][i];
+	}
+
+	//delta_weight = lr * error * x
+	//delta_bias = lr * error
+	//error * lr
+	error.scale(lr);
+	//transpose the previous layer
+
+	cout << "input: " << input.row << "x" << input.col << endl;
+	input.transpose();
+	cout << "input: " << input.row << "x" << input.col << endl;
+	//input.printGrid();
+	//derivative of the sigmoid output
+	// output * (1-output)
+	Matrix temp = Matrix(1, h_out[0].row, h_out[0].col);
+	temp = temp.subtract(h_out[0]);
+	Matrix derive = h_out[0].multi(temp);
+	derive = derive.multi(error);
+	cout << "output: " << derive.row << "x" << derive.col << endl;
+	temp.printGrid();
+	cout << "derive: " << temp.row << "x" << temp.col << endl;
+	derive.printGrid();
+	Matrix dw = input.dot(derive);
+	cout << "delta_weight: " << dw.row << "x" << dw.col << endl;
+	dw.printGrid();
+	cout << "weight: " << weight[0].row << "x" << weight[0].col << endl;
+	weight[0].printGrid();
+
+	//change the weight
+	weight[0] = weight[0].subtract(dw);
+	cout << "weight after: " << endl;
+	weight[0].printGrid();
+	
+	cout << "count: " << count << endl;
+	*/
+	
+	
+	error = train_out.subtract(result);
+	while (count >= 1) 
+	{
+		
+		
+		//cout << "error: " << error.row << "x" << error.col << endl;
+		error.printGrid();
+		totalError = 0;
+		for (int i = 0; i < error.col; i++)
+		{
+			totalError += error.ary[0][i];
+		}
+		cout << totalError << endl; 
+		//delta_weight = lr * error * x
+		//delta_bias = lr * error
+		//error * lr
+		error.scale(lr);
+		//transpose the previous layer
+
+		cout << "input: " << input.row << "x" << input.col << endl;
+		input.transpose();
+		cout << "input: " << input.row << "x" << input.col << endl;
+		//input.printGrid();
+		//derivative of the sigmoid output
+		// output * (1-output)
+		Matrix temp = Matrix(1, h_out[count - 1].row, h_out[count-1].col);
+		temp = temp.subtract(h_out[count - 1]);
+		Matrix derive = h_out[count - 1].multi(temp);
+		derive = derive.multi(error);
+		cout << "output: " << derive.row << "x" << derive.col << endl;
+		temp.printGrid();
+		cout << "derive: " << temp.row << "x" << temp.col << endl;
+		derive.printGrid();
+		Matrix dw = input.dot(derive);
+		cout << "delta_weight: " << dw.row << "x" << dw.col << endl;
+		dw.printGrid();
+		cout << "weight: " << weight[count - 1].row << "x" << weight[count - 1].col << endl;
+		weight[count - 1].printGrid();
+
+		//change the weight
+		weight[count - 1] = weight[count - 1].subtract(dw);
+		cout << "weight after: " << endl;
+		weight[count - 1].printGrid();
+
+		cout << "count: " << count << endl;
+		count--; 
+	}
+
+
+
+
+
+
+
+
+}	
 
 
